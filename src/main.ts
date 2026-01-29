@@ -9,7 +9,7 @@ async function bootstrap() {
   // ACTIVAR CORS (Vital para que Angular se conecte)
   app.enableCors();
 
-  // ACTIVAR VALIDACIONES GLOBALES (Para que funcionen tus DTOs)
+  // ACTIVAR VALIDACIONES GLOBALES (Para que funcionen DTOs)
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true, // Elimina datos extra que no estén en el DTO
