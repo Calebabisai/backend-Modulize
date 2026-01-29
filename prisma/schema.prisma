@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../node_modules/.prisma/client"
+  // output   = "../node_modules/.prisma/client" 
 }
 
 datasource db {
@@ -8,20 +8,51 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        Int     @id @default(autoincrement())
-  email     String  @unique
-  password  String
-  name      String?
-  role      String  @default("user")
-  posts     Post[]
+// 1. Roles para seguridad estricta
+enum Role {
+  USER
+  ADMIN
 }
 
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  authorId  Int
-  author    User    @relation(fields: [authorId], references: [id])
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String?
+  // Cambiamos String por el Enum para evitar errores de dedo ("admin" vs "Admin")
+  role      Role     @default(USER)
+  
+  // Relación: Un usuario (admin) puede crear muchos activos
+  assets    Asset[]
+
+  createdAt DateTime @default(now())
+}
+
+// 2. Modelo de Categorías (Ejemplos: Laptops, Pantallas, Licencias)
+model Category {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  
+  // Relación inversa: Una categoría tiene muchos activos
+  assets    Asset[]
+}
+
+// 3. El modelo principal de Activos
+model Asset {
+  id          Int      @id @default(autoincrement())
+  name        String   // Ej: "MacBook Pro M1 o cualquier otro Electronico"
+  description String?
+  status      String   // Ej: "Disponible", "En Reparación" (Usado para tus gráficas)
+  imageUrl    String?  // URL de la imagen para la tarjeta
+  
+  // Relación con Categoría (Obligatoria)
+  categoryId  Int
+  category    Category @relation(fields: [categoryId], references: [id])
+
+  // Relación con el Usuario que lo creó (Obligatoria para auditoría)
+  createdById Int
+  createdBy   User     @relation(fields: [createdById], references: [id])
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
