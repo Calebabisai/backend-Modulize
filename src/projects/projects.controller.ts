@@ -1,15 +1,17 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common';
 import { ProjectsService } from './services/projects.service';
 import { CreateProjectDto } from './dtos/create-project.dto';
-// Asumo que tienes un JwtAuthGuard creado o usas passport directamente
-// import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Proyectos (Categorías)')
 @Controller('projects')
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 
   @Post()
-  // @UseGuards(JwtAuthGuard) // Descomenta si quieres proteger la creación
+  @UseGuards(JwtAuthGuard, RolesGuard)
   create(@Body() createProjectDto: CreateProjectDto) {
     return this.projectsService.create(createProjectDto);
   }

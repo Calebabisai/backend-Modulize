@@ -19,7 +19,7 @@ export class ProjectsService {
   async findAll() {
     return this.prisma.category.findMany({
       include: {
-        _count: { select: { assets: true } }, // Extra: Devuelve cuántos equipos hay en cada categoría
+        _count: { select: { assets: true } }, // Devuelve cuántos equipos hay en cada categoría
       },
     });
   }

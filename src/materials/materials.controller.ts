@@ -5,6 +5,7 @@ import { Controller, Post, Body, UseGuards, Request } from '@nestjs/common';
 import { Role } from '@prisma/client';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 
 // Interfaz para extender la petición de Express
 interface RequestWithUser extends Record<string, any> {
@@ -14,7 +15,8 @@ interface RequestWithUser extends Record<string, any> {
     role: Role;
   };
 }
-
+@ApiTags('Materials')
+@ApiBearerAuth()
 @Controller('materials')
 export class MaterialsController {
   constructor(private readonly materialsService: MaterialsService) {}
