@@ -1,26 +1,27 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/services/prisma.service';
 import { CreateMaterialDto } from '../dtos/create-material.dto';
+import { UpdateMaterialDto } from '../dtos/update-material.dto';
 
 @Injectable()
 export class MaterialsService {
   constructor(private prisma: PrismaService) {}
 
   async create(dto: CreateMaterialDto) {
-    // 1. Validamos que el proyecto exista
+    // Validamos que el proyecto exista
     const project = await this.prisma.project.findUnique({
       where: { id: dto.projectId },
     });
 
     if (!project) throw new NotFoundException('El proyecto no existe');
 
-    // 2. Creamos el material
+    // Creamos el material
     return this.prisma.material.create({
       data: {
         name: dto.name,
         status: dto.status,
         imageUrl: dto.imageUrl,
-        projectId: dto.projectId, // Usamos la FK directa
+        projectId: dto.projectId,
       },
     });
   }
@@ -40,7 +41,7 @@ export class MaterialsService {
     });
   }
 
-  // 3. Obtener uno por ID
+  // Obtener uno por ID
   async findOne(id: number) {
     const material = await this.prisma.material.findUnique({
       where: { id },
@@ -53,8 +54,20 @@ export class MaterialsService {
     return material;
   }
 
-  // 4. Eliminar
+  async update(id: number, updateDto: UpdateMaterialDto) {
+    // Validamos que exista. No asignamos a variable para evitar el error de 'unused-vars'
+    await this.findOne(id);
+
+    return this.prisma.material.update({
+      where: { id },
+      data: updateDto, // Ahora es seguro porque usamos el DTO tipado
+    });
+  }
+
   async remove(id: number) {
+    // Solo ejecutamos la validación. Si no existe, findOne lanzará la NotFoundException
+    await this.findOne(id);
+
     return this.prisma.material.delete({
       where: { id },
     });
