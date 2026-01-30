@@ -16,7 +16,7 @@ describe('AppController', () => {
 
   describe('root', () => {
     it('should return "Corriendo Servidor"', () => {
-      expect(appController.getData()).toBe('Corriendo Servidor');
+      expect(appController.checkHealth()).toBe('Corriendo Servidor');
     });
   });
 });
