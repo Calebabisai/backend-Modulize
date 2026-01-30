@@ -10,51 +10,45 @@ datasource db {
 // Tabla Roles
 model Role {
   id    Int    @id @default(autoincrement())
-  name  String @unique // "ADMIN", "USER"
+  name  String @unique
   users User[]
 }
-
-// Tabla Usuarios (Auth)
+// Tabla Usuarios
 model User {
-  id       Int       @id @default(autoincrement())
-  email    String    @unique
+  id       Int    @id @default(autoincrement())
+  email    String @unique
   password String
   name     String?
   
-  // Relación con Role
   roleId   Int
-  role     Role      @relation(fields: [roleId], references: [id])
+  role     Role   @relation(fields: [roleId], references: [id])
   
-  // Un usuario puede gestionar varios proyectos
-  projects Project[]
+  categories Category[]
 
   createdAt DateTime @default(now())
 }
-
-// Tabla Proyectos (Categorías)
-model Project {
-  id          Int        @id @default(autoincrement())
-  name        String     @unique
+// Tabla Categorías
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
   description String?
   
-  // Relación con el Usuario que lo creó (Audit)
   userId      Int
-  user        User       @relation(fields: [userId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
 
-  // Un proyecto contiene muchos materiales
-  materials   Material[]
+  products    Product[]
 }
-
-// 4. Tabla Materiales (Activos)
-model Material {
+// Tabla Productos
+model Product {
   id          Int      @id @default(autoincrement())
   name        String
-  status      String   @default("Disponible") // Para tus gráficas
-  imageUrl    String?  // Para las tarjetas en Angular
   
-  // Relación con Proyecto
-  projectId   Int
-  project     Project  @relation(fields: [projectId], references: [id])
+  description String?  
+  status      String   @default("Disponible")
+  imageUrl    String?  
+  
+  categoryId  Int
+  category    Category @relation(fields: [categoryId], references: [id])
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

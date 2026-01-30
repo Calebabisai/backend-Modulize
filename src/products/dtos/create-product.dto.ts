@@ -1,7 +1,7 @@
 import { IsString, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateMaterialDto {
+export class CreateProductDto {
   @ApiProperty({
     example: 'MacBook Pro M3',
     description: 'Nombre del dispositivo electrónico',
@@ -28,11 +28,11 @@ export class CreateMaterialDto {
 
   @ApiProperty({
     example: 1,
-    description: 'ID del Proyecto al que pertenece este material',
+    description: 'ID de la Categoría a la que pertenece este producto',
   })
   @IsNumber()
   @IsNotEmpty()
-  projectId!: number; // Renombrado de categoryId para cumplir con la 3NF
+  categoryId!: number;
 
   @ApiProperty({
     example: 'https://tu-bucket.com/imagen.png',

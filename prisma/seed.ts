@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 async function main() {
   const password = await bcrypt.hash('123456', 10);
 
-  // Crear Roles (Usamos variables para evitar el error de 'unused-vars')
+  // Crear Roles
   const adminRole = await prisma.role.upsert({
     where: { name: 'ADMIN' },
     update: {},
@@ -19,7 +19,7 @@ async function main() {
     create: { name: 'USER' },
   });
 
-  // 2. Crear Admin
+  // Crear Admin
   const admin = await prisma.user.upsert({
     where: { email: 'admin@turing.com' },
     update: {},
@@ -27,12 +27,12 @@ async function main() {
       email: 'admin@turing.com',
       name: 'Admin Turing',
       password,
-      roleId: adminRole.id, // Aquí usamos el ID del rol creado arriba
+      roleId: adminRole.id,
     },
   });
 
-  // Crear Proyecto (Categoría)
-  const project = await prisma.project.upsert({
+  // Crear Categoría (Antes Proyecto)
+  const category = await prisma.category.upsert({
     where: { name: 'Laptops' },
     update: {},
     create: {
@@ -42,16 +42,17 @@ async function main() {
     },
   });
 
-  // Crear Material (Activo)
-  await prisma.material.create({
+  // Crear Producto (Antes Material)
+  await prisma.product.create({
     data: {
       name: 'MacBook Pro M3',
+      description: '16GB RAM, 512GB SSD, Space Gray',
       status: 'Disponible',
-      projectId: project.id,
+      categoryId: category.id,
     },
   });
 
-  console.log(' Seed finalizado con éxito en 3NF');
+  console.log('Seed finalizado con éxito: Categorías y Productos listos');
 }
 
 main()

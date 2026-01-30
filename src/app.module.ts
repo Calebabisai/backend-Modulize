@@ -5,8 +5,8 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { CommonModule } from './common/common.module';
-import { MaterialsModule } from './materials/materials.module';
-import { ProjectsModule } from './projects/projects.module';
+import { ProductsModule } from './products/products.module';
+import { CategoriesModule } from './category/category.module';
 import { PrismaService } from './prisma/services/prisma.service';
 
 @Module({
@@ -15,8 +15,8 @@ import { PrismaService } from './prisma/services/prisma.service';
     UsersModule,
     PrismaModule,
     CommonModule,
-    MaterialsModule,
-    ProjectsModule,
+    ProductsModule,
+    CategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
