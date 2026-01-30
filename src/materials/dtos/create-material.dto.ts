@@ -1,22 +1,44 @@
 import { IsString, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateMaterialDto {
+  @ApiProperty({
+    example: 'MacBook Pro M3',
+    description: 'Nombre del dispositivo electrónico',
+  })
   @IsString()
   @IsNotEmpty()
-  name!: string; // Ej: "Cualquier dispositivo electrónico(Mac, Asus laptop, iPhone, etc.)"
+  name!: string;
 
+  @ApiProperty({
+    example: 'Chip M3, 16GB RAM, 512GB SSD',
+    description: 'Detalles técnicos del equipo',
+  })
   @IsString()
   @IsNotEmpty()
   description!: string;
 
+  @ApiProperty({
+    example: 'Disponible',
+    description: 'Estado actual: Disponible, Asignado o En Reparación',
+  })
   @IsString()
   @IsNotEmpty()
-  status!: string; // Ej: "Disponible", "En Reparación", "Asignado"
+  status!: string;
 
+  @ApiProperty({
+    example: 1,
+    description: 'ID del Proyecto al que pertenece este material',
+  })
   @IsNumber()
   @IsNotEmpty()
-  categoryId!: number; // ID de la categoría (del módulo Projects)
+  projectId!: number; // Renombrado de categoryId para cumplir con la 3NF
+
+  @ApiProperty({
+    example: 'https://tu-bucket.com/imagen.png',
+    required: false,
+  })
   @IsString()
   @IsOptional()
-  imageUrl?: string; // URL de la imagen (opcional)
+  imageUrl?: string;
 }

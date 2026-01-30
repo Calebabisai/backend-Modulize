@@ -6,20 +6,25 @@ import { CreateProjectDto } from '../dtos/create-project.dto';
 export class ProjectsService {
   constructor(private prisma: PrismaService) {}
 
-  // Crear Categoría (Solo Admin debería poder, pero lo validamos en el Controller)
-  async create(dto: CreateProjectDto) {
-    return this.prisma.category.create({
+  // 1. Crear Proyecto (Vinculado al Admin que lo crea)
+  async create(dto: CreateProjectDto, userId: number) {
+    // Cambiamos 'category' por 'project'
+    return this.prisma.project.create({
       data: {
         name: dto.name,
+        description: dto.description || '',
+        user: { connect: { id: userId } },
       },
     });
   }
 
-  // Obtener todas las categorías (Para el menú de filtros del Front)
+  // 2. Obtener todos los proyectos (Para los filtros del Frontend)
   async findAll() {
-    return this.prisma.category.findMany({
+    // Cambiamos 'category' por 'project'
+    return this.prisma.project.findMany({
       include: {
-        _count: { select: { assets: true } }, // Devuelve cuántos equipos hay en cada categoría
+        // Cambiamos 'assets' por 'materials' en el conteo
+        _count: { select: { materials: true } },
       },
     });
   }

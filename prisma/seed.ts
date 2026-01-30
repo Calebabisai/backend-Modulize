@@ -1,4 +1,4 @@
-import { PrismaClient, Role } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
@@ -6,7 +6,20 @@ const prisma = new PrismaClient();
 async function main() {
   const password = await bcrypt.hash('123456', 10);
 
-  // Crear Usuarios
+  // Crear Roles (Usamos variables para evitar el error de 'unused-vars')
+  const adminRole = await prisma.role.upsert({
+    where: { name: 'ADMIN' },
+    update: {},
+    create: { name: 'ADMIN' },
+  });
+
+  await prisma.role.upsert({
+    where: { name: 'USER' },
+    update: {},
+    create: { name: 'USER' },
+  });
+
+  // 2. Crear Admin
   const admin = await prisma.user.upsert({
     where: { email: 'admin@turing.com' },
     update: {},
@@ -14,61 +27,36 @@ async function main() {
       email: 'admin@turing.com',
       name: 'Admin Turing',
       password,
-      role: Role.ADMIN,
+      roleId: adminRole.id, // Aquí usamos el ID del rol creado arriba
     },
   });
 
-  await prisma.user.upsert({
-    where: { email: 'user@turing.com' },
-    update: {},
-    create: {
-      email: 'user@turing.com',
-      name: 'Standard User',
-      password,
-      role: Role.USER,
-    },
-  });
-
-  // Crear Categorías (Importante para los filtros del front)
-  const cat1 = await prisma.category.upsert({
+  // Crear Proyecto (Categoría)
+  const project = await prisma.project.upsert({
     where: { name: 'Laptops' },
     update: {},
-    create: { name: 'Laptops' },
+    create: {
+      name: 'Laptops',
+      description: 'Equipos portátiles para desarrollo',
+      userId: admin.id,
+    },
   });
 
-  const cat2 = await prisma.category.upsert({
-    where: { name: 'Monitores' },
-    update: {},
-    create: { name: 'Monitores' },
+  // Crear Material (Activo)
+  await prisma.material.create({
+    data: {
+      name: 'MacBook Pro M3',
+      status: 'Disponible',
+      projectId: project.id,
+    },
   });
 
-  // Crear Activos de prueba
-  await prisma.asset.createMany({
-    data: [
-      {
-        name: 'MacBook Pro 16"',
-        description: 'M2 Max, 32GB RAM',
-        status: 'Disponible',
-        categoryId: cat1.id,
-        createdById: admin.id,
-      },
-      {
-        name: 'Dell UltraSharp 27"',
-        description: '4K USB-C Monitor',
-        status: 'Asignado',
-        categoryId: cat2.id,
-        createdById: admin.id,
-      },
-    ],
-    skipDuplicates: true,
-  });
-
-  console.log(' Seed finalizado: Datos de prueba listos.');
+  console.log(' Seed finalizado con éxito en 3NF');
 }
 
 main()
-  .catch((e) => {
-    console.error(e);
+  .catch((error) => {
+    console.error(error);
     process.exit(1);
   })
   .finally(async () => {

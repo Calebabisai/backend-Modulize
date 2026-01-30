@@ -6,51 +6,56 @@ import { CreateMaterialDto } from '../dtos/create-material.dto';
 export class MaterialsService {
   constructor(private prisma: PrismaService) {}
 
-  // Crear un Activo (Vinculado al Usuario y Categoría)
-  async create(dto: CreateMaterialDto, userId: number) {
-    // Validar que la categoría exista
-    const category = await this.prisma.category.findUnique({
-      where: { id: dto.categoryId },
+  async create(dto: CreateMaterialDto) {
+    // 1. Validamos que el proyecto exista
+    const project = await this.prisma.project.findUnique({
+      where: { id: dto.projectId },
     });
-    if (!category) throw new NotFoundException('La categoría no existe');
 
-    return this.prisma.asset.create({
+    if (!project) throw new NotFoundException('El proyecto no existe');
+
+    // 2. Creamos el material
+    return this.prisma.material.create({
       data: {
         name: dto.name,
-        description: dto.description,
         status: dto.status,
         imageUrl: dto.imageUrl,
-        category: { connect: { id: dto.categoryId } }, // Conectar con Categoría
-        createdBy: { connect: { id: userId } }, // Conectar con Usuario (Admin)
+        projectId: dto.projectId, // Usamos la FK directa
       },
     });
   }
 
-  // Obtener todos (Con filtro opcional por categoría)
-  async findAll(categoryId?: number) {
-    return this.prisma.asset.findMany({
-      where: categoryId ? { categoryId: Number(categoryId) } : {}, // Filtro si envían ?categoryId=1
+  // Obtener todos (Con filtro por Proyecto e inclusión anidada)
+  async findAll(projectId?: number) {
+    return this.prisma.material.findMany({
+      where: projectId ? { projectId: Number(projectId) } : {},
       include: {
-        category: true, // Incluir datos de la categoría
-        createdBy: { select: { name: true, email: true } }, // Quién lo creó
+        // Traemos el proyecto y, a través de él, quién es el responsable (User)
+        project: {
+          include: {
+            user: { select: { name: true, email: true } },
+          },
+        },
       },
     });
   }
 
-  // Obtener uno por ID (Para el detalle de la tarjeta)
+  // 3. Obtener uno por ID
   async findOne(id: number) {
-    const asset = await this.prisma.asset.findUnique({
+    const material = await this.prisma.material.findUnique({
       where: { id },
-      include: { category: true },
+      include: { project: true },
     });
-    if (!asset)
-      throw new NotFoundException(`Activo con ID ${id} no encontrado`);
-    return asset;
+
+    if (!material)
+      throw new NotFoundException(`Material con ID ${id} no encontrado`);
+
+    return material;
   }
 
-  // Eliminar (Requisito del CRUD)
+  // 4. Eliminar
   async remove(id: number) {
-    return this.prisma.asset.delete({
+    return this.prisma.material.delete({
       where: { id },
     });
   }
