@@ -8,14 +8,14 @@ export class ProductsService {
   constructor(private prisma: PrismaService) {}
 
   async create(dto: CreateProductDto) {
-    // 1. Validamos que la categoría exista (antes project)
+    // validamos que la categoría exista (antes project)
     const category = await this.prisma.category.findUnique({
       where: { id: dto.categoryId },
     });
 
     if (!category) throw new NotFoundException('La categoría no existe');
 
-    // 2. Creamos el producto (antes material)
+    // Creamos el producto (antes material)
     return this.prisma.product.create({
       data: {
         name: dto.name,

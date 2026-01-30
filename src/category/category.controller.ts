@@ -19,7 +19,6 @@ import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { CategoryService } from './services/category.service';
 import { UpdateCategoryDto } from './dtos/update-category.dto';
 
-// 1. Definimos la interfaz para la Request (Evita el uso de 'any')
 interface RequestWithUser extends Record<string, any> {
   user: {
     userId: number;
@@ -41,7 +40,6 @@ export class CategoriesController {
     @Body() createCategoryDto: CreateCategoryDto,
     @Request() req: RequestWithUser, //Usamos nuestra interfaz aquí
   ) {
-    // Ahora 'userId' está tipado correctamente como número
     const userId: number = req.user.userId;
 
     // Se pasa el argumento seguro al servicio
@@ -51,6 +49,11 @@ export class CategoriesController {
   @Get()
   findAll() {
     return this.categoryService.findAll();
+  }
+
+  @Get(':id')
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.categoryService.findOne(id);
   }
 
   @Patch(':id')
