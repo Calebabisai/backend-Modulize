@@ -1,4 +1,10 @@
-import { IsString, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  Min,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateProductDto {
@@ -11,20 +17,29 @@ export class CreateProductDto {
   name!: string;
 
   @ApiProperty({
+    example: 1999.99,
+    description: 'Precio del producto',
+  })
+  @IsNumber()
+  @Min(0) // Validación extra para que no sea negativo
+  @IsNotEmpty()
+  price!: number;
+
+  @ApiProperty({
     example: 'Chip M3, 16GB RAM, 512GB SSD',
     description: 'Detalles técnicos del equipo',
   })
   @IsString()
-  @IsNotEmpty()
-  description!: string;
+  @IsOptional() // opcional porque a veces no quieres escribir descripción obligada
+  description?: string;
 
   @ApiProperty({
     example: 'Disponible',
     description: 'Estado actual: Disponible, Asignado o En Reparación',
   })
   @IsString()
-  @IsNotEmpty()
-  status!: string;
+  @IsOptional() // Generalmente el backend pone "Disponible" por defecto, así que puede ser opcional
+  status?: string;
 
   @ApiProperty({
     example: 1,
