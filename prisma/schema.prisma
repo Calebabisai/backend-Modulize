@@ -35,7 +35,7 @@ model Category {
   
   userId      Int
   user        User      @relation(fields: [userId], references: [id])
-
+  imageUrl    String?
   products    Product[]
 }
 // Tabla Productos
