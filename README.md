@@ -1,97 +1,138 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+Modulize Backend API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Este repositorio contiene la API RESTful para la plataforma de gestión de inventario Modulize. Está construido con una arquitectura robusta y modular utilizando NestJS y Prisma como ORM para la interacción con la base de datos.
+🛠️ Stack Tecnológico
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+    Framework: NestJS (Node.js framework progressive)
 
-## Description
+    Lenguaje: TypeScript
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+    ORM & Base de Datos: Prisma (con PostgreSQL como base de datos recomendada)
 
-## Project setup
+    Autenticación: JWT (JSON Web Tokens) y Guards de NestJS.
 
-```bash
-$ pnpm install
-```
+    Gestor de Paquetes: pnpm
 
-## Compile and run the project
+📋 Prerrequisitos
 
-```bash
-# development
-$ pnpm run start
+Antes de comenzar, asegúrate de tener instalado lo siguiente en tu entorno de desarrollo (Este backend se hizo con Ubuntu Linux):
 
-# watch mode
-$ pnpm run start:dev
+    Node.js (Versión LTS recomendada, v18 o superior).
 
-# production mode
-$ pnpm run start:prod
-```
+    pnpm: El gestor de paquetes utilizado en este proyecto.
+    Bash
 
-## Run tests
+    npm install -g pnpm
 
-```bash
-# unit tests
-$ pnpm run test
+    Instancia de Base de Datos: Debes tener corriendo una base de datos (preferiblemente PostgreSQL) localmente o en Docker, y tener a mano la URL de conexión.
 
-# e2e tests
-$ pnpm run test:e2e
+🚀 Instalación y Configuración Inicial
 
-# test coverage
-$ pnpm run test:cov
-```
+Sigue estos pasos para levantar el proyecto localmente.
 
-## Deployment
+1. Clonar el repositorio e instalar dependencias
+   Bash
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+# Clona el repositorio (reemplaza con tu URL si es necesario)
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+git clone <https://github.com/Calebabisai/backend-Modulize>
+cd backend-modulize
 
-```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
-```
+# Instala las dependencias usando pnpm
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+pnpm install
 
-## Resources
+2. Configuración de Variables de Entorno (Ver tambien archivo .env.template)
 
-Check out a few resources that may come in handy when working with NestJS:
+El proyecto necesita un archivo .env en la raíz para funcionar.
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+    Crea un archivo llamado .env en la raíz del proyecto.
 
-## Support
+    Copia el siguiente contenido y ajusta los valores según tu entorno local:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Fragmento de código
 
-## Stay in touch
+# --- Configuración del Servidor ---
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+PORT=3000
+
+# --- Configuración de la Base de Datos (Prisma) ---
+
+# Reemplaza user:password@localhost:5432/mydb con tus credenciales reales de PostgreSQL
+
+DATABASE_URL="postgresql://usuario:password@localhost:5432/modulize_db?schema=public"
+
+# --- Autenticación (JWT) ---
+
+# ¡Usa una cadena larga y secreta aquí!
+
+JWT_SECRET="ESTA_ES_UNA_CLAVE_SECRETA_SUPER_SEGURA_PARA_DESARROLLO"
+JWT_EXPIRES_IN="1d"
+
+3. Configuración de la Base de Datos con Prisma
+
+Una vez configurado el .env, necesitamos sincronizar el esquema de Prisma con tu base de datos y cargar los datos iniciales (seed).
+Bash
+
+# 1. Ejecuta las migraciones para crear las tablas en tu base de datos
+
+pnpm prisma migrate dev --name init
+
+# 2. (Opcional) Genera el cliente de Prisma (usualmente se hace solo tras el migrate)
+
+pnpm prisma generate
+
+# 3. Carga los datos iniciales (Seed)
+
+# Esto ejecutará el script ubicado en prisma/seed.ts para crear usuarios admin, categorías base, etc.
+
+pnpm prisma db seed
+
+    Tip: Puedes usar Prisma Studio para una interfaz visual de tu base de datos ejecutando pnpm prisma studio.
+
+▶️ Ejecutar la Aplicación
+Modo Desarrollo (con recarga automática - watch mode)
+
+Este es el comando que usarás la mayor parte del tiempo mientras programas.
+Bash
+
+pnpm start:dev
+
+La API estará disponible en: http://localhost:3000 (o el puerto que definiste en el .env).
+Modo Producción
+
+Para simular un entorno de producción o desplegar:
+Bash
+
+# Compila el proyecto a JavaScript (carpeta /dist)
+
+pnpm build
+
+# Ejecuta el build optimizado
+
+pnpm start:prod
+
+📂 Estructura del Proyecto
+
+La arquitectura se basa en la estructura modular de NestJS, separando responsabilidades claramente.
+
+src/
+├── auth/ # Módulo de autenticación (Login, Registro, Estrategias JWT, Guards)
+├── category/ # Módulo de gestión de categorías (CRUD)
+├── products/ # Módulo de gestión de productos (CRUD)
+├── users/ # Módulo de gestión de usuarios
+├── common/ # Recursos compartidos (Enums como Roles, decoradores personalizados)
+├── prisma/ # Servicio de conexión a Prisma y Seeders
+├── main.ts # Punto de entrada de la aplicación
+└── app.module.ts # Módulo raíz que importa el resto de funcionalidades
+
+📄 Documentación de API (Swagger)
+
+Una vez que la aplicación esté corriendo, puedes acceder a la documentación interactiva de la API (Swagger/OpenAPI) en:
+
+http://localhost:3000/docs (Ajusta la ruta según tu configuración en main.ts).
+
+![alt text](image.png)
 
 ## License
 
