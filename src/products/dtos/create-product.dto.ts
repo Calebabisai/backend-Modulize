@@ -4,6 +4,7 @@ import {
   IsNumber,
   IsOptional,
   Min,
+  IsInt,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -15,7 +16,7 @@ export class CreateProductDto {
   @IsString()
   @IsNotEmpty()
   name!: string;
-
+  //Precio
   @ApiProperty({
     example: 1999.99,
     description: 'Precio del producto',
@@ -25,6 +26,17 @@ export class CreateProductDto {
   @IsNotEmpty()
   price!: number;
 
+  //Stock
+  @ApiProperty({
+    example: 10,
+    description: 'Cantidad disponible en inventario',
+  })
+  @IsInt()
+  @Min(0)
+  @IsNotEmpty()
+  stock!: number;
+
+  //Descripción
   @ApiProperty({
     example: 'Chip M3, 16GB RAM, 512GB SSD',
     description: 'Detalles técnicos del equipo',

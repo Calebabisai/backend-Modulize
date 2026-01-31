@@ -8,14 +8,14 @@ export class ProductsService {
   constructor(private prisma: PrismaService) {}
 
   async create(dto: CreateProductDto) {
-    // validamos que la categoría exista (antes project)
+    // 1. Validamos que la categoría exista
     const category = await this.prisma.category.findUnique({
       where: { id: dto.categoryId },
     });
 
     if (!category) throw new NotFoundException('La categoría no existe');
 
-    // Creamos el producto (antes material)
+    // 2. Creamos el producto incluyendo TODOS los campos
     return this.prisma.product.create({
       data: {
         name: dto.name,
@@ -23,6 +23,12 @@ export class ProductsService {
         status: dto.status,
         imageUrl: dto.imageUrl,
         categoryId: dto.categoryId,
+        price: dto.price,
+        stock: dto.stock,
+      },
+      // Así el frontend recibe el nombre (ej: 'Laptops') y no aparece 'General'
+      include: {
+        category: true,
       },
     });
   }

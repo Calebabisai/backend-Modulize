@@ -42,7 +42,8 @@ model Category {
 model Product {
   id          Int      @id @default(autoincrement())
   name        String
-  price       Float @default(0.0)
+  price       Float    @default(0.0)
+  stock       Int      @default(0)
 
   
   description String?  
