@@ -13,6 +13,9 @@ export class CategoryService {
       data: {
         name: dto.name,
         description: dto.description || '',
+
+        imageUrl: dto.imageUrl,
+
         // Conectamos con el usuario (audit)
         user: { connect: { id: userId } },
       },
@@ -42,6 +45,7 @@ export class CategoryService {
     await this.findOne(id); // Validamos que exista
     return this.prisma.category.update({
       where: { id },
+      // Prisma lo tomará automáticamente.
       data: updateDto,
     });
   }
